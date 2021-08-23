@@ -73,6 +73,13 @@
       color: #585858;
       border: 1px solid #585858;
     }
+    &.cancel-btn {
+      background-color: #fff;
+      border:1px solid #5cb75f;
+      width: 95%;
+      color: #5cb75f;
+      margin-right: 5px;
+    }
   }
 
   input {
@@ -81,5 +88,10 @@
     border:1px solid #5cb75f;
     width: 95%;
     color: #585858;
+  }
+
+  .error-msg {
+    clear: both;
+    color: red;
   }
 }

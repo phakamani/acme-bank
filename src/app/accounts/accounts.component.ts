@@ -2,8 +2,6 @@ import { DialogService } from './../dialog/dialog.service';
 import { Account } from './../model/account.model';
 import { AccountsService } from './accounts.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { WithdrawDialogComponent } from '../withdraw-dialog/withdraw-dialog.component';
 
 @Component({
   selector: 'app-accounts',
@@ -11,7 +9,6 @@ import { WithdrawDialogComponent } from '../withdraw-dialog/withdraw-dialog.comp
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnInit {
-
   accounts: Account[];
   accountType = '';
   balance = 0;
@@ -25,7 +22,6 @@ export class AccountsComponent implements OnInit {
 
   constructor(
     private accountService: AccountsService,
-    private dialog: MatDialog,
     private dialogService: DialogService
   ) { }
 
@@ -54,6 +50,7 @@ export class AccountsComponent implements OnInit {
   withdrawAmount() {
     this.error = false;
     const amount = Number(this.amount.nativeElement.value);
+
     // check if amount is Valid
     if (isNaN(amount)) {
       this.error = true;
@@ -63,7 +60,6 @@ export class AccountsComponent implements OnInit {
 
     switch (this.accountType) {
       case 'cheque':
-        //overdraft
         // check if amount is less than -500
         if (this.balance - amount < -500) {
           this.error = true;
@@ -73,6 +69,7 @@ export class AccountsComponent implements OnInit {
         break;
 
       case 'savings':
+        // check if amount the is an amount available
         if (amount > this.balance) {
           this.error = true;
           this.errorMessage = 'Insufficient funds';
@@ -83,11 +80,8 @@ export class AccountsComponent implements OnInit {
         break;
     }
 
-
-
-
     this.error = false;
-    this.dialogService.close('account-dialog');
+    this.closeDialog();
 
     this.accounts = this.accounts.map((account, index) => {
       if (index === this.index) {
@@ -109,5 +103,15 @@ export class AccountsComponent implements OnInit {
     this.dialogService.open('account-dialog')
     this.accountType = accountType;
     this.balance = Number(balance);
+  }
+
+  closeDialog() {
+    this.amount.nativeElement.value = '';
+    this.dialogService.close('account-dialog');
+    this.error = false;
+  }
+
+  cancel() {
+    this.closeDialog();
   }
 }

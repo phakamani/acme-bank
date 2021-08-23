@@ -15,31 +15,34 @@
       <td>
         {{account.account_number}}
         <app-dialog class="account-dialog">
-          <!--Amount-->
           <div style="margin: 10px 0">Enter amount</div>
+
           <input #amount type="text">
-          <div *ngIf="error" style="clear: both; color: red;">
+
+          <div *ngIf="error" class="error-msg">
             {{errorMessage}}
           </div>
+
           <div style="margin: 10px 0; ">
             <button style="float: right;" (click)="withdrawAmount(i)">Withdraw amount</button>
+            <button style="float: right; margin-left: 5px;" class="cancel-btn" (click)="cancel()">Cancel</button>
           </div>
         </app-dialog>
       </td>
+
+      <td>{{account.account_type}}</td>
+
+      <td>{{account.balance | currency : 'ZAR '}}</td>
+
       <td>
-        {{account.account_type}}
-      </td>
-      <td>
-        {{account.balance | currency : 'ZAR '}}
-      </td>
-      <td>
-        <button [disabled]="(account.account_type === 'savings' && account.balance < 0)
-          || (account.account_type === 'cheque' && account.balance < -500) ? true : false"
+        <button [disabled]="(account.account_type === 'savings' && account.balance <= 0)
+          || (account.account_type === 'cheque' && account.balance <= -500) ? true : false"
           (click)="initiateWithdrawal(account.balance, account.account_type, i)">
           Withdraw
         </button>
       </td>
     </tr>
+
     <tr>
       <td colspan="2">Balance</td>
       <td>{{totalBalance | currency : ' ZAR '}}</td>

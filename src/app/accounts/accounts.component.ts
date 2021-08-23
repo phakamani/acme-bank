@@ -63,7 +63,7 @@ export class AccountsComponent implements OnInit {
         // check if amount is less than -500
         if (this.balance - amount < -500) {
           this.error = true;
-          this.errorMessage = 'Amount exceeds -R500 overdraft';
+          this.errorMessage = `Please enter an amount less than or equal to ${(this.balance + 500).toFixed(2)}`;
           return;
         }
         break;
@@ -72,7 +72,7 @@ export class AccountsComponent implements OnInit {
         // check if amount the is an amount available
         if (amount > this.balance) {
           this.error = true;
-          this.errorMessage = 'Insufficient funds';
+          this.errorMessage = `Please enter an amount less than or equal to ${this.balance.toFixed(2)}`;
           return;
         }
         break;

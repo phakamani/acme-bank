@@ -1,0 +1,52 @@
+<h1>
+  Account list
+</h1>
+<table>
+  <thead>
+    <tr>
+      <td [width]="223">Account Number</td> <!--213px-->
+      <td [width]="156">Account Type</td> <!--156px-->
+      <td [width]="208">Balance</td> <!--208px-->
+      <td [width]="138"></td> <!--78px-->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let account of accounts, let i = index">
+      <td>
+        {{account.account_number}}
+        <app-dialog class="account-dialog">
+          <!--Amount-->
+          <div style="margin: 10px 0">Enter amount</div>
+          <input #amount type="text">
+          <div *ngIf="error" style="clear: both; color: red;">
+            {{errorMessage}}
+          </div>
+          <div style="margin: 10px 0; ">
+            <button style="float: right;" (click)="withdrawAmount(i)">Withdraw amount</button>
+          </div>
+        </app-dialog>
+      </td>
+      <td>
+        {{account.account_type}}
+      </td>
+      <td>
+        {{account.balance | currency : 'ZAR '}}
+      </td>
+      <td>
+        <button [disabled]="(account.account_type === 'savings' && account.balance < 0)
+          || (account.account_type === 'cheque' && account.balance < -500) ? true : false"
+          (click)="initiateWithdrawal(account.balance, account.account_type, i)">
+          Withdraw
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">Balance</td>
+      <td>{{totalBalance | currency : ' ZAR '}}</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
